@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -17,6 +18,8 @@ public class ClientController {
     @Autowired
     private ClientRepository clientRepository;
 
+    // Busca utilizando um ID específico. É necessário passar o ID pela URI e passar para o método utilizando
+    // o @PathVariable
     @GetMapping("/{id}")
     public ResponseEntity<Client> findClientById(@PathVariable long id){
         return clientRepository.findById(id)
@@ -24,6 +27,8 @@ public class ClientController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // Se receber um nome como parâmetro, ele busca um cliente específico
+    // Caso contrário, ele retorna uma lista com todos os clientes.
     @GetMapping
     public Object clientList(@RequestParam(required = false) String name){
 
@@ -34,12 +39,14 @@ public class ClientController {
         }
     }
 
+    // Insere um novo cliente
     @PostMapping
     public ResponseEntity<Client> saveClient(@RequestBody ClientDto clientDto){
         Client client = clientRepository.save(clientDto.convert());
         return new ResponseEntity<>(client, HttpStatus.CREATED);
     }
 
+    // Atualiza o cliente
     @PutMapping("/{id}")
     public ResponseEntity<Client> updateClient(@PathVariable("id") long id,
                                           @RequestBody ClientDto clientDto){
@@ -53,6 +60,8 @@ public class ClientController {
                 }).orElse(ResponseEntity.notFound().build());
     }
 
+    // Deleta um objeto utilizando o ID,
+    // semelhante a consulta, passamos o ID para o método utilizando o @PathVariable
     @DeleteMapping("/{id}")
     public ResponseEntity<Client> deleteClient(@PathVariable("id") long id){
 

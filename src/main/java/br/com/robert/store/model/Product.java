@@ -9,9 +9,8 @@ import javax.persistence.Id;
 import java.math.BigDecimal;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Data
-@Entity
+@Entity(name = "product")
 public class Product {
 
     @Id
@@ -19,4 +18,9 @@ public class Product {
     private Long id;
     private String name;
     private BigDecimal price;
+
+    public Product(String name, BigDecimal price){
+        this.name = name;
+        this.price = price;
+    }
 }
